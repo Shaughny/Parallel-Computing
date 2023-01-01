@@ -1,4 +1,4 @@
-# # $\pi$ approximation algorithm using the master-worker paradigm and Monte Carlo method
+#  $\pi$ approximation algorithm using the master-worker paradigm and Monte Carlo method
 
 ## Parallel $\pi$ approximation strategy:
 
