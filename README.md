@@ -6,4 +6,4 @@
 
 1.  Floyd-Warshall
 2.  Quicksort on Hypercube topology
-3.  Parellel Pi computation
+3.  Parallel $\pi$ approximation
