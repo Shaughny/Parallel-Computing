@@ -77,13 +77,7 @@ while(dartsLeft > 0){
 	dartsSent+= dartsToSend;
 }
 
-// for(;;){
 
-// 	MPI_Recv(&pi,1,MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, childComm, &status);
-
-	
-
-// }
 
 while(dartsSent < DARTS){
 	MPI_Recv(&pi,1,MPI_DOUBLE,MPI_ANY_SOURCE,1,childComm,&status);

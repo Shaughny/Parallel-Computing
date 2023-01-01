@@ -71,23 +71,13 @@ int main(int argc, char *argv[])
 	int procC, procR, sRow, sCol, eRow, eCol;
 
 	int localMatrix[block][block];
-	// if(tId == MAIN){
-	// 	std::copy(&matrix[0][0],
-	//       &matrix[0][0] + block*block,
-	//       &localMatrix[0][0]);
-	// }
+
 
 	if (tId == MAIN)
 	{
 		for (int p = 0; p < nProc; p++)
 		{
-			// procC = p / rootP;
-			// procR = p % rootP;
 
-			// sRow = (procR * N) / rootP;
-			// sCol = (procC * N) / rootP;
-			// eRow = (((procR + 1) * N) / rootP) - 1;
-			// eCol = (((procC + 1) * N) / rootP) - 1;
 			sRow = (p / rootP) * block;
 			eRow = (((p / rootP) + 1) * block) - 1;
 			sCol = (p % rootP) * block;
@@ -105,25 +95,7 @@ int main(int argc, char *argv[])
 		MPI_Recv(&(localMatrix[i][0]), block, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 	}
 
-	// cout << "PROCESSOR: " << tId << "\tDATA: " << localMatrix[0][0] << endl;
-	// if(tId == 0){
-	// 	for(int i = 0; i < block; i++){
-	// 	for(int j = 0; j < block; j++){
-	// 		cout << localMatrix[i][j] << "\t";
-	// 	}
-	// 	cout << endl;
-	// }
-	// }
 
-	// if(tId == 3){
-	// 	for(int i = 0; i< block;i++){
-	// 		for(int j = 0; j < block; j++){
-	// 				cout << localMatrix[i][j] << "\t";
-	// 		}
-	// 		cout << endl;
-
-	// }
-	// }
 
 	MPI_Comm rowComm, colComm = MPI_COMM_WORLD;
 	int rowId, colId;
@@ -157,13 +129,13 @@ int main(int argc, char *argv[])
 
 			if (procRow < rootP - 1)
 			{
-				// cout << tId << " " << procRow << "sending to " << procRow + 1 << endl;
+				
 				MPI_Send((rowBuff), block, MPI_INT, procRow + 1, 0, colComm);
 			}
 
 			if (procRow < rootP && procRow != 0)
 			{
-				// cout << tId << " " << procRow << "sending to " << procRow - 1 << "part2" << endl;
+				
 				MPI_Send((rowBuff), block, MPI_INT, procRow - 1, 0, colComm);
 			}
 		}
@@ -172,28 +144,25 @@ int main(int argc, char *argv[])
 			if (sRow > k)
 			{
 				MPI_Recv(&(rowBuff), block, MPI_INT, procRow - 1, 0, colComm, &status);
-				// cout << tId << " received from " << procRow - 1 << endl;
+				
 
 				if (procRow < rootP - 1)
 				{
-					// cout << tId << " " << procRow << "sending to " << procRow + 1 << "part4" << endl;
+					
 					MPI_Send(rowBuff, block, MPI_INT, procRow + 1, 0, colComm);
 				}
 			}
 			else if (sRow < k && procRow != rootP - 1)
 			{
-				// cout << taskid << " receiveing from "<< rowid+1 << endl;
+				
 				MPI_Recv(&rowBuff, block, MPI_INT, procRow + 1, 0, colComm, &status);
-				// cout << rowid << " IN HERE2" << endl;
 				if (procRow > 0)
 				{
-					// cout << taskid << " " << rowid << "sending to " << rowid+1 <<"part3" <<endl;
 					MPI_Send(rowBuff, block, MPI_INT, procRow - 1, 0, colComm);
 				}
 			}
 		}
 
-		// cout << "PAST ROWS \n";
 
 		if(sCol <= k && k <= eCol){
 			for (int val = 0; val < block; val++)
@@ -203,48 +172,33 @@ int main(int argc, char *argv[])
 
 			if (procCol < rootP - 1)
 			{
-				// cout << tId << " " << procCol<< "sending to " << procCol + 1 << endl;
 				MPI_Send((colBuff), block, MPI_INT, procCol + 1, 0, rowComm);
 			}
 
 			if (procCol < rootP && procCol != 0)
 			{
-				// cout << tId << " " << procCol << " sending to " << procCol- 1 << " K is : " << k << endl;
-				// if(k == 35){
-				// 	cout << "task ID: " << tId << "  column ID: " << procCol << endl;
-				// }
+			
 				MPI_Send((colBuff), block, MPI_INT, procCol - 1, 0, rowComm);
-				// if(k == 35){
-				// 	cout << "task ID: " << tId << " SENT TO  " << procCol - 1 << endl;
-				// }
+				
 			}
 			
 		}else{
 
 			if(sCol > k){
 				MPI_Recv(&colBuff, block, MPI_INT, procCol - 1, 0, rowComm, &status);
-				// cout << tId << " received from " << procCol - 1 << endl;
 
 				if (procCol < rootP - 1)
 				{
-					// cout << tId << " " << procRow << "sending to " << procRow + 1 << "part4" << endl;
-					// if(k == 35){
-					// 	cout << "HEREEEEEE";
-					// }
+				
 					MPI_Send(colBuff, block, MPI_INT, procCol+ 1, 0, rowComm);
 				}
 
 			}else if (sCol < k && sCol != rootP - 1)
 			{
-				// cout << taskid << " receiveing from "<< rowid+1 << endl;
 				MPI_Recv(&colBuff, block, MPI_INT, procCol+ 1, 0, rowComm, &status);
-				// cout << rowid << " IN HERE2" << endl;
 				if (procCol > 0)
 				{
-					// cout << tId << " " << procCol << "sending to " << procCol +1 <<"part3" <<endl;
-					// if(k == 35){
-					// 	cout << "HEREEEEEE";
-					// }
+				
 					MPI_Send(colBuff, block, MPI_INT, procCol - 1, 0, rowComm);
 				}
 			}
@@ -256,7 +210,6 @@ int main(int argc, char *argv[])
 		for (int r = 0; r < block; r++)
 		{
 
-			// cout << rowBuff[r];
 			for (int c = 0; c < block; c++)
 			{
 
@@ -264,30 +217,12 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		// if(tId == MAIN){
-		// 	cout << k << endl;
-		// }
+		
 	}
-	// if(tId == 1){
 
-	// 	 for(int i = 0; i < block; i++){
-
-	// 	 for(int j=0; j < block; j++){
-	// 		cout << localMatrix[i][j] << "\t";
-	// 	 }
-	// 	 cout << endl;
-
-	//  }
-	// }
 	int finalArray[N][N];
 
-	// if(tId == 0){
-	// 	MPI_Gather( &(localMatrix[0]) , block*block , MPI_INT , finalArray, block * block , MPI_INT , 0 , MPI_COMM_WORLD);
 
-	// }else{
-	// 	MPI_Gather( &(localMatrix[0]) , block*block , MPI_INT ,NULL , 0 , MPI_INT , 0 , MPI_COMM_WORLD);
-
-	// }
 
 	for(int d=0;d<nProc;d++){
         for(int i=0;i<block;i++){
@@ -318,19 +253,7 @@ int main(int argc, char *argv[])
         cout << endl;}
     }
 
-	// if (tId == 0)
-	// {
-	// 	for (int i = 0; i < N; i++)
-	// 	{
-
-	// 		for (int j = 0; j < N; j++)
-	// 		{
-
-	// 			cout << finalArray[i][j] << " ";
-	// 		}
-	// 		cout << endl;
-	// 	}
-	// }
+	
 	elapsed_time = MPI_Wtime() - start_time;
 	if(tId==0){
 		cout << "TIME TAKEN: \t" << elapsed_time;

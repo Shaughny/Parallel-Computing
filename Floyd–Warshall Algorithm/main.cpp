@@ -74,21 +74,11 @@ int main(int argc, char *argv[])
 	
 
 	int localMatrix[block][block];
-	// if(tId == MAIN){
-	// 	std::copy(&matrix[0][0],
-    //       &matrix[0][0] + block*block,
-    //       &localMatrix[0][0]);
-	// }
+
 	
 	if(tId == MAIN){
 		for(int p = 0; p < nProc; p++){
-			// procC = p / rootP;
-			// procR = p % rootP;
 
-			// sRow = (procR * N) / rootP;
-			// sCol = (procC * N) / rootP;
-			// eRow = (((procR + 1) * N) / rootP) - 1;
-			// eCol = (((procC + 1) * N) / rootP) - 1;
 			sRow = (p/rootP) * block;
 			eRow = (((p/rootP)+1) * block) -1;
 			sCol = (p%rootP) * block;
@@ -111,27 +101,7 @@ int main(int argc, char *argv[])
 		
 	
 
-	// cout << "PROCESSOR: " << tId << "\tDATA: " << localMatrix[0][0] << endl;
-	// if(tId == 0){
-	// 	for(int i = 0; i < block; i++){
-	// 	for(int j = 0; j < block; j++){
-	// 		cout << localMatrix[i][j] << "\t";
-	// 	}
-	// 	cout << endl;
-	// }
-	// }
-	
 
-
-	// if(tId == 3){
-	// 	for(int i = 0; i< block;i++){
-	// 		for(int j = 0; j < block; j++){
-	// 				cout << localMatrix[i][j] << "\t";
-	// 		}
-	// 		cout << endl;
-
-	// }
-	// }
 
 
 	MPI_Comm rowComm,colComm = MPI_COMM_WORLD;
@@ -196,31 +166,13 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			// if(tId == MAIN){
-			// 	cout << k << endl;
-			// }
+		
 
 	}
-	// if(tId == 1){
 
-	// 	 for(int i = 0; i < block; i++){
-		 
-	// 	 for(int j=0; j < block; j++){
-	// 		cout << localMatrix[i][j] << "\t";
-	// 	 }
-	// 	 cout << endl;
-
-	//  }
-	// }
 	int finalArray[N][N];
 
-	// if(tId == 0){
-	// 	MPI_Gather( &(localMatrix[0]) , block*block , MPI_INT , finalArray, block * block , MPI_INT , 0 , MPI_COMM_WORLD);
 
-	// }else{
-	// 	MPI_Gather( &(localMatrix[0]) , block*block , MPI_INT ,NULL , 0 , MPI_INT , 0 , MPI_COMM_WORLD);
-
-	// }
 
 
 	for(int d=0;d<nProc;d++){
@@ -243,32 +195,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    // if(tId==0){
-    //     for (int i = 0; i < 36; i++){
-    //     // loop for each column in a processors matrix 
-    //         for (int j = 0; j < 36; j++){    
-    //             cout <<finalArray[i][j] << ", ";
-    //         }
-    //     cout << endl;}
-    // }
 
-	// MPI_Gather(&(localMatrix) , block*block , MPI_INT , finalArray , block * block, MPI_INT , 0 , MPI_COMM_WORLD);
-
-
-
-	// if(tId == 0){
-	// 	for(int i = 0;i < N; i++){
-
-	// 	for(int j = 0; j < N; j++){
-
-	// 		cout << finalArray[i][j] <<  " ";
-	// 	}
-	// 	cout << endl;
-
-	// }
-
-
-	// }
 	
 	elapsed_time = MPI_Wtime() - start_time;
 	if(tId==0){

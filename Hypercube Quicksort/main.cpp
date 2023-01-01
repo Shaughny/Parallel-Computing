@@ -124,9 +124,7 @@ int main(int argc, char * argv[]){
         }
 
 
-        // for(int c = 0; c < high.size(); c++){
-        //     cout << "--" << id << "--" << high[c];
-        // }
+ 
         
 
         int highSize = high.size();
@@ -158,20 +156,7 @@ int main(int argc, char * argv[]){
             mergedVector.insert(mergedVector.end(),high.begin(),high.end());
             mergedVector.insert(mergedVector.end(),recVector.begin(),recVector.end());
        }
-        //  if(id == 1){
-        //     cout << "HIGH LENGTH " << highSize << endl;
-        //     cout << "LOW LENGTH " << lowSize << endl;
-        //     cout << "TOTAL LENGTH " << mergedVector.size() << endl;
-        //     for(int c = 0; c < high.size();c++){
-        //         cout << "HIGH: " << high[c] << endl;
-        //     }
-        //      for(int c = 0; c < low.size();c++){
-        //         cout << "LOW: " << low[c] << endl;
-        //     }
-        // }
-    //  if(id == 1){
-    //         cout << mergedVector.size() << endl;
-    //     }
+
 
         groupSize /= 2;
 
@@ -181,49 +166,19 @@ int main(int argc, char * argv[]){
         low.clear();
         sendSize = mergedVector.size();
 
-    //    cout << "ME: " << id << " recieved: " << recVector[0] << endl;
+    
         
        
         }
         
         
-        
-        // if(id == 1){
-        //     cout << "WHAAAAT";
-        //     cout << mergedVector.size();
-        //     // for(int i = 0; i < mergedVector.size();i++){
-        //     //     cout << mergedVector[i] << endl;
-        //     // }
-        // }
 
-        // if(id == 0 || id == 3){
-        //     cout << "ID: " << id << endl;
-        //     for(int i = 0; i < mergedVector.size(); i++){
-        //         cout << "THIS: " << id << "ELEMENT: " << mergedVector[i] << endl;
-        // }
-        // }
         
 
-        // cout << "ID : " << id << "EL: " << mergedVector[1] <<endl;
+      
 
         quicksort(mergedVector,0, mergedVector.size() -1);
-        // if(id == 2 ){
-        //     for(int i = 0; i < mergedVector.size(); i++){
-        //         cout << "---------- ID: " << id << "-----------  " << "Element: " << mergedVector[i] << endl;
-        //     }
-        // }
-        // if(id == 3){
-        //     for(int i = 0; i < mergedVector.size(); i++){
-        //         cout << "---------- ID: " << id << "-----------   " << "Element: " << mergedVector[i] << endl;
-        //     }
-        // }
-        // cout << "THIS ID: " << id << " ELEMENT 2: " << mergedVector[5] << endl;
 
-        // for(int i = 0;i < mergedVector.size(); i++){
-           
-        //         cout << "THIS ID IS: " << id << "\t VALUE: " << mergedVector[i] << endl;
-            
-        // }
 
        
    
@@ -257,18 +212,13 @@ int main(int argc, char * argv[]){
         
         MPI_Gatherv(mergedVector.data(),mergedVector.size(),MPI_INT,finalArray,sizeArray,displacement,MPI_INT, 0, MPI_COMM_WORLD);
 
-        // MPI_Gatherv(mergedVector.data(),mergedVector.size(),MPI_INT,NULL,NULL,NULL,MPI_INT, 0, MPI_COMM_WORLD);
 
        
        
 
         endTime = MPI_Wtime();
         
-        // if(id == 0){
-        //        for(int i = 0;i < s; i++){
-        //     cout << finalArray[i] << endl;
-        // }
-        // }
+     
         
         duration = endTime - startTime;
         if(id==0){
